@@ -7,39 +7,55 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WildWinger.gameclasses;
 
 namespace WildWinger
 {
     public partial class Form1 : Form
     {
+        Room room0;
+        Room room1;
+        Room room2;
+        Room room3;
+        Room room4;
+        Room room5;
+        Room room6;
+        Room room7;
+
+        Room[] map;
+
+        Actor _player;
+
         public Form1()
         {
             InitializeComponent();
+            InitGame();
+            StartGame();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void InitGame()
         {
             /*
-             *                  Main Bar[7]
-             *                     |
-             *      Men's Room[4] - Lobby[5] - Dinning Room[6]
-             *                     |    
-             *                  Front Door[3]
-             *                     |
-             *     West Patio[1] - Street[0] - East Patio[2]                
-             */
+ *                  Main Bar[7]
+ *                     |
+ *      Men's Room[4] - Lobby[5] - Dinning Room[6]
+ *                     |    
+ *                  Front Door[3]
+ *                     |
+ *     West Patio[1] - Street[0] - East Patio[2]                
+ */
 
-            Room room0 = new Room();
-            Room room1 = new Room();
-            Room room2 = new Room();
-            Room room3 = new Room();
-            Room room4 = new Room();
-            Room room5 = new Room();
-            Room room6 = new Room();
-            Room room7 = new Room();
-            Room room8 = new Room();
+            room0 = new Room("Street", "A City Street", 3, -1, 1, 2);
+            room1 = new Room("West Patio", "You can see the sunset from here. It's beautiful.", -1, -1, -1, 0);
+            room2 = new Room("East Patio", "There are two pigeons fighting over a french fry. Gross!", -1, -1, 0, -1);
+            room3 = new Room("Front Door", "An entry way to wing heaven. There's an ATM here", 5, 0, -1, -1);
+            room4 = new Room("Men's Room", "Employees must wash hands.", -1, -1, -1, 5);
+            room5 = new Room("Lobby", "There is a friendly Hostest waiting to seat you.", 7, 3, 4, 6);
+            room6 = new Room("Dinning Room", "It's hella family friendly up in here.", -1, -1, 5, -1);
+            room7 = new Room("Main Bar", "A room full of bar stools and beer taps A.K.A. heaven.", -1, 5, -1, -1);
+            
 
-            Room[] map = new Room[9];
+            map = new Room[8];
             map[0] = room0;
             map[1] = room1;
             map[2] = room2;
@@ -48,68 +64,37 @@ namespace WildWinger
             map[5] = room5;
             map[6] = room6;
             map[7] = room7;
-            map[8] = room8;
-             
-            room0.name = "Street";
-            room0.n = 3;
-            room0.s = -1;
-            room0.w = 1;
-            room0.e = 2;
 
-            room1.name = "West Patio";
-            room1.n = -1;
-            room1.s = -1;
-            room1.w = -1;
-            room1.e = 0;
+            _player = new Actor("Matt", "A man on a quest for buffalo wings", room0);
+        }
 
-            room2.name = "East Patio";
-            room2.n = -1;
-            room2.s = -1;
-            room2.w = 0;
-            room2.e = -1;
-
-            room3.name = "Front Door";
-            room3.n = 5;
-            room3.s = 0;
-            room3.w = -1;
-            room3.e = -1;
-
-            room4.name = "Men's Room";
-            room4.n = -1;
-            room4.s = -1;
-            room4.w = -1;
-            room4.e = 5;
-
-            room5.name = "Lobby";
-            room5.n = 7;
-            room5.s = 3;
-            room5.w = 4;
-            room5.e = 6;
-
-            room6.name = "Dinning Room";
-            room6.n = -1;
-            room6.s = -1;
-            room6.w = 5;
-            room6.e = -1;
-
-            room7.name = "Main Bar";
-            room7.n = -1;
-            room7.s = 5;
-            room7.w = -1;
-            room7.e = -1;
-
-
-
+        private void StartGame()
+        {
             outputTB.Text = "Welcome To WildWinger!\n";
+            outputTB.AppendText($"You are in the {_player.Location.Name}.\n");
+            outputTB.AppendText("Click a direction: N, S, E, W");
+        }
+
+        private void MovePlayer(int newpos)
+        {
+            return;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+
+            
             foreach (var item in map)
             {
-                outputTB.AppendText(Exits(map, item));
+                if(item != null) outputTB.AppendText(Exits(map, item));
             }
             
         }
         public string Exits(Room[] map, Room r)
         {
-            return $"Your are in the {r.name}, There are exits to: N={map[r.n].name} S={map[r.s].name} W={map[r.w].name} E={map[r.e].name}\n";
+            return $"You are in the {r.Name}\n";
         }
+
     }
 }
