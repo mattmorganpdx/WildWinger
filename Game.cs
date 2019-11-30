@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System;
 using WildWinger.gameclasses;
 
 namespace WildWinger
 {
-    public partial class Form1 : Form
+    public class Game
     {
         Room room0;
         Room room1;
@@ -26,14 +18,8 @@ namespace WildWinger
 
         Actor _player;
 
-        public Form1()
-        {
-            InitializeComponent();
-            InitGame();
-            StartGame();
-        }
 
-        private void InitGame()
+        public void InitGame()
         {
             /*
  *                  Main Bar[7]
@@ -53,7 +39,7 @@ namespace WildWinger
             room5 = new Room("Lobby", "There is a friendly Hostest waiting to seat you.", 7, 3, 4, 6);
             room6 = new Room("Dinning Room", "It's hella family friendly up in here.", -1, -1, 5, -1);
             room7 = new Room("Main Bar", "A room full of bar stools and beer taps A.K.A. heaven.", -1, 5, -1, -1);
-            
+
 
             map = new Room[8];
             map[0] = room0;
@@ -68,33 +54,46 @@ namespace WildWinger
             _player = new Actor("Matt", "A man on a quest for buffalo wings", room0);
         }
 
-        private void StartGame()
+        public void StartGame()
         {
-            outputTB.Text = "Welcome To WildWinger!\n";
-            outputTB.AppendText($"You are in the {_player.Location.Name}.\n");
-            outputTB.AppendText("Click a direction: N, S, E, W");
+            Console.WriteLine("Welcome To WildWinger!");
+            Console.WriteLine($"You are in the {_player.Location.Name}.\n");
+            Console.WriteLine("Enter a direction: N, S, E, W or L to Look");
         }
 
-        private void MovePlayer(int newpos)
+        public void MovePlayer(int newpos)
         {
             return;
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
 
-
-            
-            foreach (var item in map)
-            {
-                if(item != null) outputTB.AppendText(Exits(map, item));
-            }
-            
-        }
         public string Exits(Room[] map, Room r)
         {
             return $"You are in the {r.Name}\n";
         }
 
+        public void Loop()
+        {
+            var key = Console.ReadKey().Key.ToString();
+            switch (key)
+            {
+                case "N":
+                    break;
+                case "S":
+                    break;
+                case "W":
+                    break;
+                case "E":
+                    break;
+                case "L":
+                    break;
+                case "Q":
+                    System.Environment.Exit(0);
+                    break;
+                default:
+                    Console.WriteLine("Not a valid Key");
+                    break;
+            }
+        }
     }
 }
