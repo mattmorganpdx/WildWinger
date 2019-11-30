@@ -5,16 +5,8 @@ namespace WildWinger
 {
     public class Game
     {
-        Room room0;
-        Room room1;
-        Room room2;
-        Room room3;
-        Room room4;
-        Room room5;
-        Room room6;
-        Room room7;
 
-        Room[] map;
+        RoomList _map;
 
         Actor _player;
 
@@ -22,36 +14,28 @@ namespace WildWinger
         public void InitGame()
         {
             /*
- *                  Main Bar[7]
- *                     |
- *      Men's Room[4] - Lobby[5] - Dinning Room[6]
- *                     |    
- *                  Front Door[3]
- *                     |
- *     West Patio[1] - Street[0] - East Patio[2]                
- */
+            *                  Main Bar[7]
+            *                     |
+            *      Men's Room[4] - Lobby[5] - Dinning Room[6]
+            *                     |    
+            *                  Front Door[3]
+            *                     |
+            *     West Patio[1] - Street[0] - East Patio[2]                
+            */
 
-            room0 = new Room("Street", "A City Street", 3, -1, 1, 2);
-            room1 = new Room("West Patio", "You can see the sunset from here. It's beautiful.", -1, -1, -1, 0);
-            room2 = new Room("East Patio", "There are two pigeons fighting over a french fry. Gross!", -1, -1, 0, -1);
-            room3 = new Room("Front Door", "An entry way to wing heaven. There's an ATM here", 5, 0, -1, -1);
-            room4 = new Room("Men's Room", "Employees must wash hands.", -1, -1, -1, 5);
-            room5 = new Room("Lobby", "There is a friendly Hostest waiting to seat you.", 7, 3, 4, 6);
-            room6 = new Room("Dinning Room", "It's hella family friendly up in here.", -1, -1, 5, -1);
-            room7 = new Room("Main Bar", "A room full of bar stools and beer taps A.K.A. heaven.", -1, 5, -1, -1);
+            _map = new RoomList
+            {
+                { Rm.Street, new Room("Street", "A City Street", Rm.FrontDoor, Rm.NOEXIT, Rm.WestPatio, Rm.EastPatio) },
+                { Rm.WestPatio, new Room("West Patio", "You can see the sunset from here. It's beautiful.", Rm.NOEXIT, Rm.NOEXIT, Rm.NOEXIT, Rm.Street) },
+                { Rm.EastPatio, new Room("East Patio", "There are two pigeons fighting over a french fry. Gross!", Rm.NOEXIT, Rm.NOEXIT, Rm.Street, Rm.NOEXIT) },
+                { Rm.FrontDoor, new Room("Front Door", "An entry way to wing heaven. There's an ATM here", Rm.Lobby, Rm.Street, Rm.NOEXIT, Rm.NOEXIT) },
+                { Rm.MensRoom, new Room("Men's Room", "Employees must wash hands.", Rm.NOEXIT, Rm.NOEXIT, Rm.NOEXIT, Rm.Lobby) },
+                { Rm.Lobby, new Room("Lobby", "There is a friendly Hostest waiting to seat you.", Rm.MainBar, Rm.FrontDoor, Rm.MensRoom, Rm.DinningRoom) },
+                { Rm.DinningRoom, new Room("Dinning Room", "It's hella family friendly up in here.", Rm.NOEXIT, Rm.NOEXIT, Rm.Lobby, Rm.NOEXIT) },
+                { Rm.MainBar, new Room("Main Bar", "A room full of bar stools and beer taps A.K.A. heaven.", Rm.NOEXIT, Rm.Lobby, Rm.NOEXIT, Rm.NOEXIT) }
+            };
 
-
-            map = new Room[8];
-            map[0] = room0;
-            map[1] = room1;
-            map[2] = room2;
-            map[3] = room3;
-            map[4] = room4;
-            map[5] = room5;
-            map[6] = room6;
-            map[7] = room7;
-
-            _player = new Actor("Matt", "A man on a quest for buffalo wings", room0);
+            _player = new Actor("Matt", "A man on a quest for buffalo wings", _map[Rm.Street]);
         }
 
         public void StartGame()
@@ -61,16 +45,19 @@ namespace WildWinger
             Console.WriteLine("Enter a direction: N, S, E, W or L to Look");
         }
 
-        public void MovePlayer(int newpos)
+        public void MovePlayer(Rm newPosition)
         {
+            if(newPosition == Rm.NOEXIT)
+            {
+                Console.WriteLine("You can't go that way from here.");
+            } else
+            {
+                _player.Location = _map.RoomAt(newPosition);
+                Console.WriteLine($"You are now in the {_player.Location.Name}");
+            }
             return;
         }
 
-
-        public string Exits(Room[] map, Room r)
-        {
-            return $"You are in the {r.Name}\n";
-        }
 
         public void Loop()
         {
@@ -78,14 +65,19 @@ namespace WildWinger
             switch (key)
             {
                 case "N":
+                    MovePlayer(_player.Location.N);
                     break;
                 case "S":
+                    MovePlayer(_player.Location.S);
                     break;
                 case "W":
+                    MovePlayer(_player.Location.W);
                     break;
                 case "E":
+                    MovePlayer(_player.Location.E);
                     break;
                 case "L":
+                    Console.WriteLine(_player.Location.Description);
                     break;
                 case "Q":
                     System.Environment.Exit(0);
