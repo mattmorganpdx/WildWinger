@@ -5,10 +5,8 @@ namespace WildWinger
 {
     public class Game
     {
-
-        RoomList _map;
-
-        Actor _player;
+        private RoomList _map;
+        private Actor _player;
 
 
         public void InitGame()
@@ -35,7 +33,7 @@ namespace WildWinger
                 { Rm.MainBar, new Room("Main Bar", "A room full of bar stools and beer taps A.K.A. heaven.", Rm.NOEXIT, Rm.Lobby, Rm.NOEXIT, Rm.NOEXIT) }
             };
 
-            _player = new Actor("Matt", "A man on a quest for buffalo wings", _map[Rm.Street]);
+            _player = new Actor("Matt", "A man on a quest for buffalo wings", _map.RoomAt(Rm.Street));
         }
 
         public void StartGame()

@@ -6,38 +6,21 @@ namespace WildWinger.gameclasses
 {
     public class Room : Thing
     {
-        private Rm _n;
-        private Rm _s;
-        private Rm _w;
-        private Rm _e;
-        
         public Room(string aName, string aDescription, Rm aN, Rm aS, Rm aW, Rm aE) :
             base(aName, aDescription)
         {
-            _n = aN;
-            _s = aS;
-            _w = aW;
-            _e = aE;
+            N = aN;
+            S = aS;
+            W = aW;
+            E = aE;
         }
 
-        public Rm N
-        {
-            get => _n;
-        }
+        public Rm N { get; }
 
-        public Rm S
-        {
-            get => _s;
-        }
+        public Rm S { get; }
 
-        public Rm W
-        {
-            get => _w;
-        }
+        public Rm W { get; }
 
-        public Rm E
-        {
-            get => _e;
-        }
+        public Rm E { get; }
     }
 }
